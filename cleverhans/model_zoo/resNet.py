@@ -350,13 +350,13 @@ class ResNet(Model):
     # Do a dummy run of fprop to make sure the variables are created from
     # the start
     self.fprop(x)
-    # Put a reference to the params in self so that the params get pickled
+    # Put areference to the params in self so that the params get pickled
     self.params = self.get_params()
 
   ##Need manually adjust the model####
   def fprop(self, x, **kwargs):
     del kwargs
-    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=2, scope=self.s)
+    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=10, scope=self.s, reuse=tf.AUTO_REUSE)
 
     return {self.O_LOGITS: logits,
             self.O_PROBS: tf.nn.softmax (logits=logits)}
