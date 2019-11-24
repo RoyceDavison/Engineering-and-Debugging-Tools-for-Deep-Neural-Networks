@@ -328,21 +328,35 @@ class ResNet(Model):
   resnet_v1_200.default_image_size = resnet_v1.default_image_size
 
   def __init__(self, scope, nb_classes, nb_filters, **kwargs):
+    # del kwargs
+    # Model.__init__(self, scope, nb_classes, locals())
+    # self.nb_filters = nb_filters
+    #
+    # # Do a dummy run of fprop to make sure the variables are created from
+    # # the start
+    # self.fprop(tf.placeholder(tf.float32, [128, 28, 28, 1]))
+    # # Put a reference to the params in self so that the params get pickled
+    # self.params = self.get_params()
+    # print(self.params)
+
     del kwargs
     Model.__init__(self, scope, nb_classes, locals())
     self.nb_filters = nb_filters
 
+    self.s = scope
+
+    x = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
+
     # Do a dummy run of fprop to make sure the variables are created from
     # the start
-    self.fprop(tf.placeholder(tf.float32, [128, 28, 28, 1]))
+    self.fprop(x)
     # Put a reference to the params in self so that the params get pickled
     self.params = self.get_params()
-    print(self.params)
 
   ##Need manually adjust the model####
   def fprop(self, x, **kwargs):
     del kwargs
-    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=2)
+    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=2, scope=self.s)
 
     return {self.O_LOGITS: logits,
             self.O_PROBS: tf.nn.softmax (logits=logits)}
