@@ -73,7 +73,8 @@ ATTACK_ITERATIONS = 100
 import os
 MODEL_PATH = os.path.join('models', 'mnist')
 TARGETED = True
-
+source_samples = SOURCE_SAMPLES
+attack_iterations = ATTACK_ITERATIONS
 
 # Train an MNIST model
 train_params = {
@@ -84,6 +85,7 @@ train_params = {
 }
 
 from cleverhans.train import train
+from cleverhans.utils_tf import model_eval
 rng = np.random.RandomState([2017, 8, 30])
 # check if we've trained before, and if we have, use that pre-trained model
 train(sess, loss, x_train, y_train, args=train_params, rng=rng)
@@ -92,6 +94,34 @@ cw = CarliniWagnerL2(model, sess=sess)
 
 saver = tf.train.Saver()
 saver.save(sess, MODEL_PATH)
+
+adv_inputs = np.array(
+          [[instance] * nb_classes for
+           instance in x_test[:source_samples]], dtype=np.float32)
+one_hot = np.zeros((nb_classes, nb_classes))
+one_hot[np.arange(nb_classes), np.arange(nb_classes)] = 1
+adv_inputs = adv_inputs.reshape(
+    (source_samples * nb_classes, img_rows, img_cols, nchannels))
+adv_ys = np.array([one_hot] * source_samples,
+                  dtype=np.float32).reshape((source_samples *
+                                             nb_classes, nb_classes))
+yname = "y_target"
+cw_params_batch_size = source_samples * nb_classes
+cw_params = {'binary_search_steps': 1,
+             yname: adv_ys,
+             'max_iterations': attack_iterations,
+             'learning_rate': CW_LEARNING_RATE,
+             'batch_size': cw_params_batch_size,
+             'initial_const': 10}
+
+adv = cw.generate_np(adv_inputs,
+                     **cw_params)
+
+eval_params = {'batch_size': np.minimum(nb_classes, source_samples)}
+adv_accuracy = model_eval(
+        sess, x, y, preds, adv, adv_ys, args=eval_params)
+print(adv_accuracy)
+print('--------------------------------------')
 
 #
 # # Evaluate the accuracy of the MNIST model on legitimate test examples
