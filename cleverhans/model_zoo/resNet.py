@@ -217,13 +217,13 @@ class ResNet(Model):
     """ResNet-50 model of [1]. See resnet_v1() for arg and return description."""
     depth_func = lambda d: max (int (d * depth_multiplier), min_base_depth)
     blocks = [
-      resnet_v1_block ('block1', base_depth=depth_func (64), num_units=3,
+      resnet_v1_block ('block1', base_depth=depth_func (64), num_units=1,
                        stride=2),
-      resnet_v1_block ('block2', base_depth=depth_func (128), num_units=4,
+      resnet_v1_block ('block2', base_depth=depth_func (128), num_units=2,
                        stride=2),
-      resnet_v1_block ('block3', base_depth=depth_func (256), num_units=6,
+      resnet_v1_block ('block3', base_depth=depth_func (256), num_units=3,
                        stride=2),
-      resnet_v1_block ('block4', base_depth=depth_func (512), num_units=3,
+      resnet_v1_block ('block4', base_depth=depth_func (512), num_units=2,
                        stride=1),
     ]
     return resnet_v1(inputs, blocks, num_classes, is_training,
@@ -342,7 +342,7 @@ class ResNet(Model):
     del kwargs
     Model.__init__(self, scope, nb_classes, locals())
     self.nb_filters = nb_filters
-
+    self.nb_classes = nb_classes
     self.s = scope
 
     x = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
@@ -356,7 +356,7 @@ class ResNet(Model):
   ##Need manually adjust the model####
   def fprop(self, x, **kwargs):
     del kwargs
-    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=10, scope=self.s, reuse=tf.AUTO_REUSE)
+    logits, _ = ResNet.resnet_v1_50(inputs=x, num_classes=self.nb_classes, scope=self.s, reuse=tf.AUTO_REUSE)
 
     return {self.O_LOGITS: logits,
             self.O_PROBS: tf.nn.softmax (logits=logits)}

@@ -60,6 +60,10 @@ print("Defined TensorFlow model graph.")
 # Training the model using TensorFlow
 ###########################################################################
 
+#training ResNetmodel
+
+
+
 # from cleverhans.compat import flags
 # FLAGS = flags.FLAGS
 
