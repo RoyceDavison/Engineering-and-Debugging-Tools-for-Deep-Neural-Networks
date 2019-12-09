@@ -20,18 +20,18 @@ import warnings
 
 import numpy as np
 import tensorflow as tf
-# try:
-#   from tensorflow.python.keras.utils import np_utils
-#   from tensorflow.keras.datasets import cifar10
-# except ImportError:
-#   # In tf 1.8, np_utils doesn't seem to be publicly exposed.
-#   # In later tf versions, it is, and in pre-tf keras it was too.
-#   from tensorflow.python.keras import _impl
-#   np_utils = _impl.keras.utils.np_utils
-#   # In tf 1.8, "from tensorflow.keras.datasets import cifar10" doesn't work even though the module exists
-#   cifar10 = tf.keras.datasets.cifar10
-#   warnings.warn("Support for TensorFlow versions prior to 1.12 is deprecated."
-#                 " CleverHans using earlier versions may quit working on or after 2019-07-07.")
+try:
+  from tensorflow.python.keras.utils import np_utils
+  from tensorflow.keras.datasets import cifar10
+except ImportError:
+  # In tf 1.8, np_utils doesn't seem to be publicly exposed.
+  # In later tf versions, it is, and in pre-tf keras it was too.
+  from tensorflow.python.keras import _impl
+  np_utils = _impl.keras.utils.np_utils
+  # In tf 1.8, "from tensorflow.keras.datasets import cifar10" doesn't work even though the module exists
+  cifar10 = tf.keras.datasets.cifar10
+  warnings.warn("Support for TensorFlow versions prior to 1.12 is deprecated."
+                " CleverHans using earlier versions may quit working on or after 2019-07-07.")
 from cleverhans import utils
 
 
