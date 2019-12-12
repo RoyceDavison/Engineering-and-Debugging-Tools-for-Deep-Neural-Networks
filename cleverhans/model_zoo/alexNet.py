@@ -71,11 +71,11 @@ def alexnet_v2(inputs,
       net = slim.conv2d(inputs, 64, [11, 11], 4, padding='VALID',
                         scope='conv1')
       net = slim.max_pool2d(net, [3, 3], 2, scope='pool1')
-      net = slim.conv2d(net, 192, [5, 5], scope='conv2')
+      net = slim.conv2d(net, 100, [5, 5], scope='conv2')
       net = slim.max_pool2d(net, [3, 3], 2, scope='pool2')
-      net = slim.conv2d(net, 384, [3, 3], scope='conv3')
-      net = slim.conv2d(net, 384, [3, 3], scope='conv4')
-      net = slim.conv2d(net, 256, [3, 3], scope='conv5')
+      net = slim.conv2d(net, 225, [3, 3], scope='conv3')
+      net = slim.conv2d(net, 225, [3, 3], scope='conv4')
+      net = slim.conv2d(net, 112, [3, 3], scope='conv5')
       net = slim.max_pool2d(net, [3, 3], 2, scope='pool5')
 
       # Use conv2d instead of fully_connected layers.

@@ -217,13 +217,13 @@ class ResNet(Model):
     """ResNet-50 model of [1]. See resnet_v1() for arg and return description."""
     depth_func = lambda d: max (int (d * depth_multiplier), min_base_depth)
     blocks = [
-      resnet_v1_block ('block1', base_depth=depth_func (64), num_units=1,
+      resnet_v1_block ('block1', base_depth=depth_func (64), num_units=3,
                        stride=2),
-      resnet_v1_block ('block2', base_depth=depth_func (128), num_units=2,
+      resnet_v1_block ('block2', base_depth=depth_func (128), num_units=4,
                        stride=2),
-      resnet_v1_block ('block3', base_depth=depth_func (256), num_units=3,
+      resnet_v1_block ('block3', base_depth=depth_func (256), num_units=6,
                        stride=2),
-      resnet_v1_block ('block4', base_depth=depth_func (512), num_units=2,
+      resnet_v1_block ('block4', base_depth=depth_func (512), num_units=3,
                        stride=1),
     ]
     return resnet_v1(inputs, blocks, num_classes, is_training,
