@@ -1,2 +1,2 @@
 # Engineering-and-Debugging-Tools-for-Deep-Neural-Networks
-This project is the detailed implementation of engineering debugging tools described in our unpublished paper "Debugging and Visualization Tools of Deep Learning – Challenges and Chances".
+This project is the detailed implementation of engineering debugging tools described in our unpublished paper [Debugging and Visualization Tools of Deep Learning – Challenges and Chances](https://github.com/RoyceDavison/Engineering-and-Debugging-Tools-for-Deep-Neural-Networks/blob/master/Debugging%20and%20Visualization%20Tools%20of%20Deep%20Learning.pdf).
